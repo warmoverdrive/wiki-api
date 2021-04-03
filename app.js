@@ -90,7 +90,7 @@ app
       { title: req.params.article },
       { title: req.body.title, content: req.body.content },
       { overwrite: true },
-      (err, log) => {
+      (err) => {
         if (err) {
           res.send(err);
         } else {
@@ -104,7 +104,7 @@ app
     Article.updateOne(
       { title: req.params.article },
       { $set: req.body },
-      (err, log) => {
+      (err) => {
         if (err) {
           res.send(err);
         } else {
@@ -113,6 +113,16 @@ app
         }
       }
     );
+  })
+  .delete((req, res) => {
+    Article.deleteOne({ title: req.params.article }, (err) => {
+      if (err) {
+        res.send(err);
+      } else {
+        console.log(`Deleted successfully`);
+        res.sendStatus(200);
+      }
+    });
   });
 
 //==============================================================//
