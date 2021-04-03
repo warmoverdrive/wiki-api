@@ -72,19 +72,34 @@ app
 // '/articles/:article' specific route handling
 //==============================================================//
 
-app.route("/articles/:article").get((req, res) => {
-  const query = req.params.article;
-
-  Article.find({ title: query }, (err, articles) => {
-    if (err) {
-      res.send(err);
-    } else if (articles.length === 0) {
-      res.sendStatus(404);
-    } else {
-      res.send(articles);
-    }
+app
+  .route("/articles/:article")
+  .get((req, res) => {
+    Article.find({ title: req.params.article }, (err, articles) => {
+      if (err) {
+        res.send(err);
+      } else if (articles.length === 0) {
+        res.sendStatus(404);
+      } else {
+        res.send(articles);
+      }
+    });
+  })
+  .put((req, res) => {
+    Article.replaceOne(
+      { title: req.params.article },
+      { title: req.body.title, content: req.body.content },
+      { overwrite: true },
+      (err, log) => {
+        if (err) {
+          res.send(err);
+        } else {
+          console.log(`Updated successfully`);
+          res.sendStatus(200);
+        }
+      }
+    );
   });
-});
 
 //==============================================================//
 // Server start
