@@ -29,7 +29,7 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 //==============================================================//
-// '/articles' route handling
+// '/articles' general route handling
 //==============================================================//
 
 app
@@ -67,6 +67,24 @@ app
       }
     });
   });
+
+//==============================================================//
+// '/articles/:article' specific route handling
+//==============================================================//
+
+app.route("/articles/:article").get((req, res) => {
+  const query = req.params.article;
+
+  Article.find({ title: query }, (err, articles) => {
+    if (err) {
+      res.send(err);
+    } else if (articles.length === 0) {
+      res.sendStatus(404);
+    } else {
+      res.send(articles);
+    }
+  });
+});
 
 //==============================================================//
 // Server start
