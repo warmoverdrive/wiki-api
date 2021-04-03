@@ -94,7 +94,21 @@ app
         if (err) {
           res.send(err);
         } else {
-          console.log(`Updated successfully`);
+          console.log(`Replaced successfully`);
+          res.sendStatus(200);
+        }
+      }
+    );
+  })
+  .patch((req, res) => {
+    Article.updateOne(
+      { title: req.params.article },
+      { $set: req.body },
+      (err, log) => {
+        if (err) {
+          res.send(err);
+        } else {
+          console.log(`Patched successfully`);
           res.sendStatus(200);
         }
       }
